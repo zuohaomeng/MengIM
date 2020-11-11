@@ -1,6 +1,6 @@
 package com.meng.mengim.common.bean;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * @Author ZuoHao
@@ -15,7 +15,7 @@ public class BaseMessage {
     /**
      * 消息体
      */
-    private ObjectMapper body;
+    private String body;
 
     public short getType() {
         return type;
@@ -25,11 +25,11 @@ public class BaseMessage {
         this.type = type;
     }
 
-    public ObjectMapper getBody() {
+    public String getBody() {
         return body;
     }
 
-    public void setBody(ObjectMapper body) {
+    public void setBody(String body) {
         this.body = body;
     }
 
