@@ -1,0 +1,11 @@
+
+server:
+  port: 6666
+spring:
+  application:
+    name: mengim-server
+
+
+#logging:
+#  level:
+#    root: debug
