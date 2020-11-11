@@ -1,6 +1,5 @@
 package com.meng.mengim.server.handler;
 
-import com.meng.mengim.common.bean.BaseMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,7 +20,8 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf>{
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf message) throws Exception {
-        System.out.println(message.toString(CharsetUtil.UTF_8));
+        //将消息记录到控制台
+        System.out.println("Server received: "+message.toString(CharsetUtil.UTF_8));
         logger.info("接收信息成功！");
     }
 

@@ -30,7 +30,6 @@ public class NettyServerConfig {
     @PostConstruct
     public void init() {
         LOGGER.info("[NettyConfig],init-------");
-        final IMServerRouterHandler routerHandler = new IMServerRouterHandler();
         EventLoopGroup group = new NioEventLoopGroup();
 
         try {
@@ -46,14 +45,11 @@ public class NettyServerConfig {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             //因为EchoServerHandler被标注未@Shareable,所以我们可以总是使用同样的实例
-                            ch.pipeline().addLast(new EchoServerHandler());
-//                            ch.pipeline().addLast(routerHandler);
+                            ch.pipeline().addLast(new IMServerRouterHandler());
                         }
                     });
             //同步地绑定服务器，调用sync()方法阻塞等待直到绑定完成
             ChannelFuture f = serverBootstrap.bind().sync();
-            //获取Channel的CloseFuture，并且阻塞当前线程直到它完成
-            f.channel().closeFuture().sync();
         }catch (Exception e){
             LOGGER.error("[NettyConfig init error],",e);
         }
