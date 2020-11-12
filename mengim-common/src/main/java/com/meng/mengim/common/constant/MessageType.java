@@ -10,7 +10,18 @@ public enum MessageType {
      * 普通文本消息
      */
     CHAT_MESSAGE((short) 1, "普通文本消息"),
-
+    /**
+     * 心跳消息
+     */
+    HEART_MESSAGE((short)2,"心跳消息"),
+    /**
+     * 登录消息
+     */
+    LOGIN_message((short)3,"登录消息"),
+    /**
+     * ack消息
+     */
+    ACK_MESSAGE((short) 4,"ack消息"),
     ;
     private short type;
     private String desc;

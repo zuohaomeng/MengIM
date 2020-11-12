@@ -10,6 +10,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -25,7 +26,8 @@ public class NettyServerConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyServerConfig.class);
     private static final int port = 9999;
     ServerBootstrap serverBootstrap = new ServerBootstrap();
-
+    @Autowired
+    private IMServerRouterHandler imServerRouterHandler;
 
     @PostConstruct
     public void init() {
@@ -45,7 +47,7 @@ public class NettyServerConfig {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             //因为EchoServerHandler被标注未@Shareable,所以我们可以总是使用同样的实例
-                            ch.pipeline().addLast(new IMServerRouterHandler());
+                            ch.pipeline().addLast(imServerRouterHandler);
                         }
                     });
             //同步地绑定服务器，调用sync()方法阻塞等待直到绑定完成

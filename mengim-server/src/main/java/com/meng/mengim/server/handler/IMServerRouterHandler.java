@@ -10,29 +10,41 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @Author ZuoHao
  * @Date 2020/11/10 18:14
  * @Description netty转发器
+ * 标示一个ChannelHandler可以被多个Channel安全地共享
  */
-@ChannelHandler.Sharable//标示一个ChannelHandler可以被多个Channel安全地共享
+@ChannelHandler.Sharable
+@Component
 public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private final Logger LOGGER = LoggerFactory.getLogger(IMServerRouterHandler.class);
-
+    @Resource
+    private HandlerFactory handlerFactory;
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf buf) throws Exception {
         String str = buf.toString(CharsetUtil.UTF_8);
         BaseMessage message = JSON.parseObject(str, BaseMessage.class);
         LOGGER.info("[channelRead0]-[receive message],message={}",message);
-        if(message.getType() == 1){
-            ChatMessage chatMessage = JSON.parseObject(message.getBody(), ChatMessage.class);
-            LOGGER.info("[channelRead0]-[receive chatMessage],message={}",chatMessage);
+        //获取具体的处理类型
+        AbstractHandler handler = handlerFactory.get(message.getType());
+
+        //进行处理
+        try {
+            handler.handler(message);
+        }catch (Exception e){
+            LOGGER.error("[具体消息处理失败],error=",e);
         }
-        //将消息记录到控制台
-        System.out.println("Server received: " + buf.toString(CharsetUtil.UTF_8));
-        LOGGER.info("接收信息成功！");
     }
 
 
