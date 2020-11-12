@@ -32,7 +32,7 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
     private HandlerFactory handlerFactory;
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf buf) throws Exception {
+    protected void channelRead0(ChannelHandlerContext context, ByteBuf buf) throws Exception {
         String str = buf.toString(CharsetUtil.UTF_8);
         BaseMessage message = JSON.parseObject(str, BaseMessage.class);
         LOGGER.info("[channelRead0]-[receive message],message={}",message);
@@ -41,7 +41,7 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
 
         //进行处理
         try {
-            handler.handler(message);
+            handler.handler(context,message);
         }catch (Exception e){
             LOGGER.error("[具体消息处理失败],error=",e);
         }

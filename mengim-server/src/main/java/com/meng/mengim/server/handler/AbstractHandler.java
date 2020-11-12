@@ -2,6 +2,7 @@ package com.meng.mengim.server.handler;
 
 
 import com.meng.mengim.common.bean.BaseMessage;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
  * @Author ZuoHao
@@ -18,5 +19,5 @@ public abstract class AbstractHandler{
     /**
      * 具体处理逻辑，进行重载
      */
-    public abstract void handler(BaseMessage message);
+    public abstract void handler(ChannelHandlerContext context,BaseMessage message);
 }

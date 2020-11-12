@@ -1,6 +1,7 @@
 package com.meng.mengim.client.controller;
 
 import com.meng.mengim.common.bean.ChatMessage;
+import com.meng.mengim.common.bean.LoginMessage;
 import com.meng.mengim.common.constant.MessageType;
 import com.meng.mengim.common.util.JsonUtils;
 import io.netty.buffer.ByteBuf;
@@ -42,9 +43,18 @@ public class MessageController {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setMemberId(178183852);
         chatMessage.setContent("你好啊");
-        ByteBuf byteBuf = JsonUtils.buildByteBuf(MessageType.CHAT_MESSAGE.getType(),chatMessage);
+        ByteBuf byteBuf = JsonUtils.buildByteBuf(MessageType.CHAT_MESSAGE.getType(), chatMessage);
         ChannelFuture channelFuture = channel.writeAndFlush(byteBuf);
-        channelFuture.addListener(e -> LOGGER.info("客户端消息发送成={}", byteBuf));
+//        channelFuture.addListener(e -> LOGGER.info("客户端消息发送成={}", byteBuf));
+        return "success";
+    }
+
+    @RequestMapping("/sendLoginMessage")
+    public Object sendLoginMessage() {
+        LoginMessage message = new LoginMessage();
+        message.setMemberId(178183852);
+        ByteBuf byteBuf = JsonUtils.buildByteBuf(MessageType.LOGIN_MESSAGE.getType(), message);
+        ChannelFuture channelFuture = channel.writeAndFlush(byteBuf);
         return "success";
     }
 

@@ -1,6 +1,5 @@
 package com.meng.mengim.common.bean;
 
-import com.alibaba.fastjson.JSONObject;
 
 /**
  * @Author ZuoHao

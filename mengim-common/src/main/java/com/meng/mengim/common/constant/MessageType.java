@@ -17,7 +17,7 @@ public enum MessageType {
     /**
      * 登录消息
      */
-    LOGIN_message((short)3,"登录消息"),
+    LOGIN_MESSAGE((short)3,"登录消息"),
     /**
      * ack消息
      */
