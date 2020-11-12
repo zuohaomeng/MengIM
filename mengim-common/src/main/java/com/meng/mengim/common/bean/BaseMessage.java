@@ -12,6 +12,9 @@ public class BaseMessage {
      */
     private short type;
     /**
+     * 消息id
+     */
+    /**
      * 消息体
      */
     private String body;

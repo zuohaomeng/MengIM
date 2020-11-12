@@ -2,7 +2,6 @@ package com.meng.mengim.common.util;
 
 import com.alibaba.fastjson.JSON;
 import com.meng.mengim.common.bean.BaseMessage;
-import com.meng.mengim.common.bean.ChatMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.CharsetUtil;
@@ -13,7 +12,6 @@ import io.netty.util.CharsetUtil;
  * @Description
  */
 public class JsonUtils {
-
 
     public static ByteBuf buildByteBuf(short type, Object msg) {
         BaseMessage message = new BaseMessage();
