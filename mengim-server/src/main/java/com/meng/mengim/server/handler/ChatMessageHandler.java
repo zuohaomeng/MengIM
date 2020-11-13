@@ -1,6 +1,6 @@
 package com.meng.mengim.server.handler;
 
-import com.meng.mengim.common.bean.BaseMessage;
+import com.meng.mengim.common.bean.MessageRequest;
 import com.meng.mengim.common.constant.MessageType;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class ChatMessageHandler extends AbstractHandler{
     }
 
     @Override
-    public void handler(ChannelHandlerContext context, BaseMessage message) {
+    public void handler(ChannelHandlerContext context, MessageRequest msgRequest) {
         LOGGER.info("普通聊天消息处理开始了----");
     }
 }

@@ -2,8 +2,7 @@ package com.meng.mengim.server.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.meng.mengim.common.bean.AckMessage;
-import com.meng.mengim.common.bean.BaseMessage;
-import com.meng.mengim.common.bean.ChatMessage;
+import com.meng.mengim.common.bean.MessageRequest;
 import com.meng.mengim.common.constant.MessageType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
@@ -12,10 +11,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -36,7 +31,7 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
     @Override
     protected void channelRead0(ChannelHandlerContext context, ByteBuf buf) throws Exception {
         String str = buf.toString(CharsetUtil.UTF_8);
-        BaseMessage message = JSON.parseObject(str, BaseMessage.class);
+        MessageRequest message = JSON.parseObject(str, MessageRequest.class);
         LOGGER.info("[channelRead0]-[receive message],message={}",message);
         //获取具体的处理类型
         AbstractHandler handler = handlerFactory.get(message.getType());
@@ -49,7 +44,7 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
         }
         //如果不是ack消息，发回ack应答
         if (message.getType() != MessageType.ACK_MESSAGE.getType()) {
-            context.writeAndFlush(new AckMessage(message.getId()));
+//            context.writeAndFlush(new AckMessage(message.getId()));
         }
     }
 

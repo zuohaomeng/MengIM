@@ -6,7 +6,7 @@ package com.meng.mengim.common.bean;
  * @Date 2020/11/10 18:28
  * @Description 基础消息类型
  */
-public class BaseMessage {
+public class MessageRequest {
     /**
      * 消息唯一id
      */

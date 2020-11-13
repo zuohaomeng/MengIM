@@ -5,7 +5,7 @@ package com.meng.mengim.client.service;
  * @Date 2020/11/13
  * @Description
  */
-public interface MessageClientService {
+public interface IMClientService {
     /**
      * 发送聊天消息
      */

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.net.InetSocketAddress;
 
 /**
@@ -27,6 +28,12 @@ public class NettyClientConfig {
 
     private ChannelFuture channelFuture;
     private Channel channel;
+
+    @Resource
+    private MessageClientHandler messageClientHandler;
+
+
+
     @PostConstruct
     public void init() throws Exception {
         LOGGER.info("[NettyClientConfig],init-------");
@@ -40,7 +47,7 @@ public class NettyClientConfig {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(new MessageClientHandler());
+                            socketChannel.pipeline().addLast(messageClientHandler);
                         }
                     });
             channelFuture = b.connect().sync();

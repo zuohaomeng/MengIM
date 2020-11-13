@@ -1,7 +1,5 @@
 package com.meng.mengim.client.service;
 
-import com.meng.mengim.common.bean.BaseMessage;
-
 /**
  * @Author ZuoHao
  * @Date 2020/11/13
@@ -12,7 +10,7 @@ public interface AckRedisService {
      * 保存发送的消息
      * @param messageId
      */
-    void saveMessageId(String messageId, BaseMessage message);
+    void saveMessageId(String messageId);
 
     /**
      * 删除消息id
@@ -22,5 +20,5 @@ public interface AckRedisService {
     /**
      * 获取
      */
-    BaseMessage getMessageId(String messageId);
+    boolean exist(String messageId);
 }

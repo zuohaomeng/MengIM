@@ -8,5 +8,10 @@
     <artifactId>mengim</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <modules>
+        <module>mengim-client</module>
+        <module>mengim-common</module>
+        <module>mengim-server</module>
+    </modules>
 
 </project>

@@ -1,6 +1,6 @@
 package com.meng.mengim.client.controller;
 
-import com.meng.mengim.client.service.MessageClientService;
+import com.meng.mengim.client.service.IMClientService;
 import com.meng.mengim.common.bean.ChatMessage;
 import com.meng.mengim.common.bean.LoginMessage;
 import com.meng.mengim.common.constant.MessageType;
@@ -28,7 +28,7 @@ public class MessageController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
 
     @Resource
-    private MessageClientService messageClientService;
+    private IMClientService IMClientService;
 
     @Resource
     private Channel channel;
@@ -43,12 +43,7 @@ public class MessageController {
 
     @RequestMapping("/sendChatMessage")
     public Object sendChatMessage() {
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setMemberId(178183852);
-        chatMessage.setContent("你好啊");
-        ByteBuf byteBuf = JsonUtils.buildBaseMessage(MessageType.CHAT_MESSAGE.getType(), chatMessage);
-
-        ChannelFuture channelFuture = channel.writeAndFlush(byteBuf);
+        IMClientService.sendChatMessage(178183852, "你好");
         return "success";
     }
 

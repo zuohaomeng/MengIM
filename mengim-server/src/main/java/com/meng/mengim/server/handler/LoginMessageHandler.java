@@ -1,7 +1,7 @@
 package com.meng.mengim.server.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.meng.mengim.common.bean.BaseMessage;
+import com.meng.mengim.common.bean.MessageRequest;
 import com.meng.mengim.common.bean.LoginMessage;
 import com.meng.mengim.common.constant.MessageType;
 import io.netty.channel.Channel;
@@ -25,7 +25,7 @@ public class LoginMessageHandler extends AbstractHandler{
     }
 
     @Override
-    public void handler(ChannelHandlerContext context, BaseMessage message) {
+    public void handler(ChannelHandlerContext context, MessageRequest message) {
         LoginMessage loginMessage = JSON.parseObject(message.getBody(), LoginMessage.class);
         userChannel.put(loginMessage.getMemberId(),context.channel());
         channelUser.put(context.channel(),loginMessage.getMemberId());
