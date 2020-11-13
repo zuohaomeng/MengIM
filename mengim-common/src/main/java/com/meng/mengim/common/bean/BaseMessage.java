@@ -8,12 +8,13 @@ package com.meng.mengim.common.bean;
  */
 public class BaseMessage {
     /**
+     * 消息唯一id
+     */
+    private String id;
+    /**
      * 消息类型，心跳，普通消息，登录消息，ack
      */
     private short type;
-    /**
-     * 消息id
-     */
     /**
      * 消息体
      */
@@ -35,11 +36,20 @@ public class BaseMessage {
         this.body = body;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "BaseMessage{" +
                 "type=" + type +
-                ", body=" + body +
+                ", id=" + id +
+                ", body='" + body + '\'' +
                 '}';
     }
 }

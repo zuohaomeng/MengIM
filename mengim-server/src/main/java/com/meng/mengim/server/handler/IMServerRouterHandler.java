@@ -1,8 +1,10 @@
 package com.meng.mengim.server.handler;
 
 import com.alibaba.fastjson.JSON;
+import com.meng.mengim.common.bean.AckMessage;
 import com.meng.mengim.common.bean.BaseMessage;
 import com.meng.mengim.common.bean.ChatMessage;
+import com.meng.mengim.common.constant.MessageType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -44,6 +46,10 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
             handler.handler(context,message);
         }catch (Exception e){
             LOGGER.error("[具体消息处理失败],error=",e);
+        }
+        //如果不是ack消息，发回ack应答
+        if (message.getType() != MessageType.ACK_MESSAGE.getType()) {
+            context.writeAndFlush(new AckMessage(message.getId()));
         }
     }
 

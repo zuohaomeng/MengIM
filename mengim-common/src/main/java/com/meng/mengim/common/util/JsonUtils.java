@@ -6,6 +6,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.CharsetUtil;
 
+import java.util.UUID;
+
 /**
  * @Author ZuoHao
  * @Date 2020/11/11
@@ -13,9 +15,10 @@ import io.netty.util.CharsetUtil;
  */
 public class JsonUtils {
 
-    public static ByteBuf buildByteBuf(short type, Object msg) {
+    public static ByteBuf buildBaseMessage(short type, Object msg) {
         BaseMessage message = new BaseMessage();
         message.setType(type);
+        message.setId(UUID.randomUUID().toString());
         String body = JSON.toJSONString(msg);
         message.setBody(body);
         String json = JSON.toJSONString(message);
