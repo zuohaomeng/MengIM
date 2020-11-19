@@ -1,6 +1,8 @@
 package com.meng.mengim.common.util;
 
 import com.alibaba.fastjson.JSON;
+import com.meng.mengim.common.bean.HeartMessage;
+import com.meng.mengim.common.bean.LoginMessage;
 import com.meng.mengim.common.bean.MessageRequest;
 import com.meng.mengim.common.bean.ChatMessage;
 import com.meng.mengim.common.constant.MessageType;
@@ -13,16 +15,34 @@ import java.util.UUID;
  * @Description
  */
 public class MessageUtil {
-    public static MessageRequest buildChatMessage(long messageId, String context){
-        MessageRequest baseMessage = new MessageRequest();
-        baseMessage.setType(MessageType.CHAT_MESSAGE.getType());
-        baseMessage.setId(UUID.randomUUID().toString());
+    public static MessageRequest buildChatMessage(long memberId, String context){
+        MessageRequest request = new MessageRequest();
+        request.setType(MessageType.CHAT_MESSAGE.getType());
+        request.setId(UUID.randomUUID().toString());
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setContent(context);
-        chatMessage.setMemberId(messageId);
+        chatMessage.setMemberId(memberId);
         String body = JSON.toJSONString(chatMessage);
-        baseMessage.setBody(body);
-        return baseMessage;
+        request.setBody(body);
+        return request;
     }
-
+    public static MessageRequest buildLoginMessage(long memberId){
+        MessageRequest request = new MessageRequest();
+        request.setType(MessageType.LOGIN_MESSAGE.getType());
+        request.setId(UUID.randomUUID().toString());
+        LoginMessage loginMessage = new LoginMessage();
+        loginMessage.setMemberId(memberId);
+        String body = JSON.toJSONString(loginMessage);
+        request.setBody(body);
+        return request;
+    }
+    public static MessageRequest buildHeardMessage(long memberId){
+        MessageRequest request = new MessageRequest();
+        request.setType(MessageType.HEART_MESSAGE.getType());
+        HeartMessage heartMessage = new HeartMessage();
+        heartMessage.setMemberId(memberId);
+        String body = JSON.toJSONString(heartMessage);
+        request.setBody(body);
+        return request;
+    }
 }

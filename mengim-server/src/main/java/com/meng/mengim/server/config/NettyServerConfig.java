@@ -8,6 +8,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author ZuoHao
@@ -46,14 +48,14 @@ public class NettyServerConfig {
                         //初始化每一个channel
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            //因为EchoServerHandler被标注未@Shareable,所以我们可以总是使用同样的实例
-                            ch.pipeline().addLast(imServerRouterHandler);
+                            ch.pipeline().addLast(new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS))
+                                    .addLast(imServerRouterHandler);
                         }
                     });
             //同步地绑定服务器，调用sync()方法阻塞等待直到绑定完成
             ChannelFuture f = serverBootstrap.bind().sync();
-        }catch (Exception e){
-            LOGGER.error("[NettyConfig init error],",e);
+        } catch (Exception e) {
+            LOGGER.error("[NettyConfig init error],", e);
         }
     }
 }

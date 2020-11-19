@@ -51,7 +51,7 @@ public class MessageController {
     public Object sendLoginMessage() {
         LoginMessage message = new LoginMessage();
         message.setMemberId(178183852);
-        ByteBuf byteBuf = JsonUtils.buildBaseMessage(MessageType.LOGIN_MESSAGE.getType(), message);
+        ByteBuf byteBuf = JsonUtils.buildMessageRequest(MessageType.LOGIN_MESSAGE.getType(), message);
         ChannelFuture channelFuture = channel.writeAndFlush(byteBuf);
         return "success";
     }

@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 public class JsonUtils {
 
-    public static ByteBuf buildBaseMessage(short type, Object msg) {
+    public static ByteBuf buildMessageRequest(short type, Object msg) {
         MessageRequest message = new MessageRequest();
         message.setType(type);
         message.setId(UUID.randomUUID().toString());

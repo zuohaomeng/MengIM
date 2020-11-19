@@ -1,5 +1,6 @@
 package com.meng.mengim.client.config;
 
+import com.meng.mengim.common.util.MessageUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.net.InetSocketAddress;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @Author ZuoHao
@@ -23,8 +26,8 @@ import java.net.InetSocketAddress;
 public class NettyClientConfig {
     private final static Logger LOGGER = LoggerFactory.getLogger(NettyClientConfig.class);
 
-    private final String host = "127.0.0.1";
-    private final int port = 9999;
+    private final static String host = "127.0.0.1";
+    private final static int port = 9999;
 
     private ChannelFuture channelFuture;
     private Channel channel;

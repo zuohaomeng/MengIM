@@ -13,15 +13,15 @@ public enum MessageType {
     /**
      * 心跳消息
      */
-    HEART_MESSAGE((short)2,"心跳消息"),
+    HEART_MESSAGE((short) 2, "心跳消息"),
     /**
      * 登录消息
      */
-    LOGIN_MESSAGE((short)3,"登录消息"),
+    LOGIN_MESSAGE((short) 3, "登录消息"),
     /**
      * ack消息
      */
-    ACK_MESSAGE((short) 4,"ack消息"),
+    ACK_MESSAGE((short) 4, "ack消息"),
     ;
     private short type;
     private String desc;
@@ -47,6 +47,10 @@ public enum MessageType {
         this.desc = desc;
     }
 
+    public static boolean isNeedAck(short type) {
+        return type != ACK_MESSAGE.getType()
+                && type != HEART_MESSAGE.getType();
+    }
 
     public static MessageType of(short type) {
         for (MessageType t : MessageType.values()) {

@@ -1,5 +1,6 @@
-package com.meng.mengim.server.handler;
+package com.meng.mengim.server.handler.factory;
 
+import com.meng.mengim.server.handler.AbstractHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -23,7 +24,7 @@ public class HandlerFactory implements ApplicationContextAware, InitializingBean
 
     private ApplicationContext applicationContext ;
 
-    private Map<Short,AbstractHandler> handlerMap = new HashMap<>();
+    private Map<Short, AbstractHandler> handlerMap = new HashMap<>();
 
     public AbstractHandler get(Short type){
         return handlerMap.get(type);

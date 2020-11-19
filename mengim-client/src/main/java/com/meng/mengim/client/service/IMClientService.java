@@ -13,5 +13,5 @@ public interface IMClientService {
     /**
      * 发送上线消息
      */
-    void sendLoginMessage(long message);
+    void sendLoginMessage(long memberId);
 }

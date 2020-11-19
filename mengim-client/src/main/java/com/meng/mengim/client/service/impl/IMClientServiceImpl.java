@@ -36,31 +36,44 @@ public class IMClientServiceImpl implements IMClientService {
     @Override
     public void sendChatMessage(long memberId, String context) {
 
-        MessageRequest message = MessageUtil.buildChatMessage(memberId, context);
-        ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(message), CharsetUtil.UTF_8);
-        //写入
+        MessageRequest request = MessageUtil.buildChatMessage(memberId, context);
+        ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8);
+        //发送
         channel.writeAndFlush(byteBuf);
-        //ack缓存
-        ackRedisService.saveMessageId(message.getId());
-
         //重发校验
-        resendCheck(channel, message,byteBuf);
+        resendCheck(channel, request);
 
     }
 
-    private void resendCheck(Channel channel, MessageRequest message, ByteBuf byteBuf) {
+    @Override
+    public void sendLoginMessage(long memberId) {
+        MessageRequest request = MessageUtil.buildLoginMessage(memberId);
+        ByteBuf buf = Unpooled.copiedBuffer(JSON.toJSONString(request),CharsetUtil.UTF_8);
+        //发送
+        channel.writeAndFlush(buf);
+        //重发校验
+        resendCheck(channel, request);
+    }
+
+
+    /**
+     * 重发确认
+     */
+    private void resendCheck(Channel channel, MessageRequest request) {
+        //ack缓存
+        ackRedisService.saveMessageId(request.getId());
         //ack校验
         threadPool.schedule(() -> {
-            doResendCheck(channel, message, byteBuf);
+            doResendCheck(channel, request);
         }, 5, TimeUnit.SECONDS);
     }
 
-    private void doResendCheck(Channel channel, MessageRequest message, ByteBuf byteBuf) {
+    private void doResendCheck(Channel channel, MessageRequest request) {
         int time = 1;
         //重发两次
         while (time <= 2) {
-            if (ackRedisService.exist(message.getId())) {
-                channel.writeAndFlush(Unpooled.copiedBuffer(JSON.toJSONString(message),CharsetUtil.UTF_8));
+            if (ackRedisService.exist(request.getId())) {
+                channel.writeAndFlush(Unpooled.copiedBuffer(JSON.toJSONString(request),CharsetUtil.UTF_8));
                 try {
                     TimeUnit.SECONDS.sleep(2);
                 } catch (InterruptedException e) {
@@ -71,11 +84,6 @@ public class IMClientServiceImpl implements IMClientService {
             }
             time++;
         }
-        LOGGER.error("[doResendCheck],send message error,times=3,message={}", message);
-    }
-
-    @Override
-    public void sendLoginMessage(long message) {
-
+        LOGGER.error("[doResendCheck],send message error,times=3,message={}", request);
     }
 }
