@@ -21,7 +21,7 @@ public class ChatMessageHandler extends AbstractHandler{
     }
 
     @Override
-    public void handler(ChannelHandlerContext context, MessageRequest msgRequest) {
+    public void handler(ChannelHandlerContext ctx, MessageRequest msgRequest) {
         LOGGER.info("普通聊天消息处理开始了----");
     }
 }

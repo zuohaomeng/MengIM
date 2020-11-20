@@ -1,4 +1,4 @@
-package com.meng.mengim.client.config;
+package com.meng.mengim.client.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

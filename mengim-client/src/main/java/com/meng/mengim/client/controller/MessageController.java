@@ -33,14 +33,6 @@ public class MessageController {
     @Resource
     private Channel channel;
 
-    @RequestMapping("/send")
-    public Object send() {
-        String message = "看海贼王";
-        ChannelFuture channelFuture = channel.writeAndFlush(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8));
-        channelFuture.addListener(e -> LOGGER.info("客户端发消息成功={}", message));
-        return "success";
-    }
-
     @RequestMapping("/sendChatMessage")
     public Object sendChatMessage() {
         IMClientService.sendChatMessage(178183852, "你好");
@@ -49,10 +41,7 @@ public class MessageController {
 
     @RequestMapping("/sendLoginMessage")
     public Object sendLoginMessage() {
-        LoginMessage message = new LoginMessage();
-        message.setMemberId(178183852);
-        ByteBuf byteBuf = JsonUtils.buildMessageRequest(MessageType.LOGIN_MESSAGE.getType(), message);
-        ChannelFuture channelFuture = channel.writeAndFlush(byteBuf);
+        IMClientService.sendLoginMessage(178183852);
         return "success";
     }
 

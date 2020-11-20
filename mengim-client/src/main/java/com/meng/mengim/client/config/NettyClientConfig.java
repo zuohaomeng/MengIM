@@ -1,6 +1,6 @@
 package com.meng.mengim.client.config;
 
-import com.meng.mengim.common.util.MessageUtil;
+import com.meng.mengim.client.handler.MessageClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @Author ZuoHao

@@ -3,6 +3,7 @@ package com.meng.mengim.server.handler;
 import com.alibaba.fastjson.JSON;
 import com.meng.mengim.common.bean.AckMessage;
 import com.meng.mengim.common.bean.MessageRequest;
+import com.meng.mengim.common.constant.AttributeKeyConstant;
 import com.meng.mengim.common.constant.MessageType;
 import com.meng.mengim.common.util.JsonUtils;
 import com.meng.mengim.server.handler.factory.HandlerFactory;
@@ -38,7 +39,6 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
     protected void channelRead0(ChannelHandlerContext context, ByteBuf buf) throws Exception {
         String str = buf.toString(CharsetUtil.UTF_8);
         MessageRequest message = JSON.parseObject(str, MessageRequest.class);
-        LOGGER.info("[channelRead0]-[receive message],message={}", message);
         //获取具体的处理类型
         AbstractHandler handler = handlerFactory.get(message.getType());
 
@@ -56,12 +56,10 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        System.out.println("超时了");
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {
                 loginMessageHandler.removeUserChannel(ctx);
-                ctx.channel().close();
             }
         }
         super.userEventTriggered(ctx, evt);
@@ -75,6 +73,9 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        LOGGER.error("[exceptionCaught],disconnect,memberId={}", ctx.channel().attr(AttributeKeyConstant.MEMBER_ID).get());
+        System.out.println("出问题了");
+        loginMessageHandler.removeUserChannel(ctx);
         cause.printStackTrace();
         ctx.close();
     }

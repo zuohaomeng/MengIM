@@ -1,6 +1,7 @@
 package com.meng.mengim.client.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.meng.mengim.client.handler.HeardBeatHandler;
 import com.meng.mengim.client.service.AckRedisService;
 import com.meng.mengim.client.service.IMClientService;
 import com.meng.mengim.common.bean.MessageRequest;
@@ -32,6 +33,8 @@ public class IMClientServiceImpl implements IMClientService {
     private Channel channel;
     @Resource
     private AckRedisService ackRedisService;
+    @Resource
+    private HeardBeatHandler heardBeatHandler;
 
     @Override
     public void sendChatMessage(long memberId, String context) {
@@ -42,7 +45,6 @@ public class IMClientServiceImpl implements IMClientService {
         channel.writeAndFlush(byteBuf);
         //重发校验
         resendCheck(channel, request);
-
     }
 
     @Override
@@ -53,6 +55,7 @@ public class IMClientServiceImpl implements IMClientService {
         channel.writeAndFlush(buf);
         //重发校验
         resendCheck(channel, request);
+        heardBeatHandler.heardBead(channel,memberId);
     }
 
 
@@ -73,6 +76,7 @@ public class IMClientServiceImpl implements IMClientService {
         //重发两次
         while (time <= 2) {
             if (ackRedisService.exist(request.getId())) {
+                LOGGER.info("[doResendCheck]-send message again.message={}",request);
                 channel.writeAndFlush(Unpooled.copiedBuffer(JSON.toJSONString(request),CharsetUtil.UTF_8));
                 try {
                     TimeUnit.SECONDS.sleep(2);

@@ -48,7 +48,7 @@ public class NettyServerConfig {
                         //初始化每一个channel
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS))
+                            ch.pipeline().addLast(new IdleStateHandler(15, 0, 0, TimeUnit.SECONDS))
                                     .addLast(imServerRouterHandler);
                         }
                     });

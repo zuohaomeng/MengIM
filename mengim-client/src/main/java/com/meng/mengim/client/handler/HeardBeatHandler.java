@@ -7,6 +7,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.util.CharsetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,13 +20,19 @@ import java.util.concurrent.TimeUnit;
  * @Date 2020/11/19
  * @Description
  */
+@Component
 public class HeardBeatHandler {
+    private final Logger logger = LoggerFactory.getLogger(HeardBeatHandler.class);
     private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-    private void hearBead(Channel channel,long memberId){
+
+    /**
+     * 每10秒一次心跳轮训时间实现
+     */
+    public void heardBead(Channel channel,long memberId){
         MessageRequest request = MessageUtil.buildHeardMessage(memberId);
         executorService.scheduleAtFixedRate(()->{
             ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8);
             channel.writeAndFlush(byteBuf);
-        },0,10, TimeUnit.SECONDS);
+        },50000,10, TimeUnit.SECONDS);
     }
 }

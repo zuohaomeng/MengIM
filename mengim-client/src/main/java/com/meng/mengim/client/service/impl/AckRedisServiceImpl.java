@@ -1,6 +1,8 @@
 package com.meng.mengim.client.service.impl;
 
 import com.meng.mengim.client.service.AckRedisService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +16,12 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class AckRedisServiceImpl implements AckRedisService {
-
+    private final Logger logger = LoggerFactory.getLogger(AckRedisServiceImpl.class);
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     /**
-     * 保存消息发送id10s
+     * 保存消息发送id30s
      */
     @Override
     public void saveMessageId(String messageId) {
@@ -27,12 +29,12 @@ public class AckRedisServiceImpl implements AckRedisService {
     }
 
     @Override
-    public void deleteMessageId(String messageId) {
-        redisTemplate.delete(messageId);
+    public Boolean deleteMessageId(String messageId) {
+        return redisTemplate.delete(messageId);
     }
 
     @Override
-    public boolean exist(String messageId) {
+    public Boolean exist(String messageId) {
         return redisTemplate.hasKey(messageId);
     }
 }

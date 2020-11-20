@@ -16,9 +16,9 @@ public interface AckRedisService {
      * 删除消息id
      * @param messageId
      */
-    void deleteMessageId(String messageId);
+    Boolean deleteMessageId(String messageId);
     /**
      * 获取
      */
-    boolean exist(String messageId);
+    Boolean exist(String messageId);
 }

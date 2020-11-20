@@ -1,4 +1,4 @@
-package com.meng.mengim.client.config;
+package com.meng.mengim.client.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.meng.mengim.client.service.AckRedisService;
@@ -9,8 +9,6 @@ import com.meng.mengim.common.constant.MessageType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +16,16 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-
+/**
+ * @Author ZuoHao
+ * @Date 2020/11/19
+ * @Description
+ */
 @Service
 public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageClientHandler.class);
 
 
-    @Resource
-    private IMClientService IMClientService;
 
     @Resource
     private AckRedisService ackRedisService;
@@ -42,12 +42,14 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf msg) throws Exception {
         String str = msg.toString(CharsetUtil.UTF_8);
         MessageRequest msgRequest = JSON.parseObject(str, MessageRequest.class);
-        LOGGER.info("[channelRead0],receive message,message={}", msgRequest);
 
         //1.ACK确认
         if (msgRequest.getType() == MessageType.ACK_MESSAGE.getType()) {
             AckMessage ackMessage = JSON.parseObject(msgRequest.getBody(), AckMessage.class);
-            ackRedisService.deleteMessageId(ackMessage.getAckId());
+            Boolean result = ackRedisService.deleteMessageId(ackMessage.getAckId());
+            if(!result){
+                LOGGER.error("[channelRead0]-ack,delete messageId error.messageId={}",ackMessage.getAckId());
+            }
         }
         //2.业务逻辑处理
 
