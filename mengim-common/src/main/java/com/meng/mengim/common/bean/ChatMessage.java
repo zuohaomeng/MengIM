@@ -11,6 +11,10 @@ public class ChatMessage {
      */
     private long memberId;
     /**
+     * 接收消息的用户
+     */
+    private long receivedId;
+    /**
      * 内容
      */
     private String content;
@@ -31,11 +35,20 @@ public class ChatMessage {
         this.content = content;
     }
 
+    public long getReceivedId() {
+        return receivedId;
+    }
+
+    public void setReceivedId(long receivedId) {
+        this.receivedId = receivedId;
+    }
+
     @Override
     public String toString() {
         return "ChatMessage{" +
                 "memberId=" + memberId +
-                ", content=" + content +
+                ", receivedId=" + receivedId +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

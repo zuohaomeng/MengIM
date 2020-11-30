@@ -2,8 +2,10 @@ package com.meng.mengim.client.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.meng.mengim.client.service.AckRedisService;
+import com.meng.mengim.client.service.ChatMessageService;
 import com.meng.mengim.client.service.IMClientService;
 import com.meng.mengim.common.bean.AckMessage;
+import com.meng.mengim.common.bean.ChatMessage;
 import com.meng.mengim.common.bean.MessageRequest;
 import com.meng.mengim.common.constant.MessageType;
 import io.netty.buffer.ByteBuf;
@@ -15,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Objects;
+
+import static com.meng.mengim.common.constant.MessageType.CHAT_MESSAGE;
 
 /**
  * @Author ZuoHao
@@ -28,7 +33,8 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Resource
     private AckRedisService ackRedisService;
-
+    @Resource
+    private ChatMessageService chatMessageService;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -49,9 +55,19 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
             if (!result) {
                 LOGGER.error("[channelRead0]-ack,delete messageId error.messageId={}", ackMessage.getAckId());
             }
+            return;
         }
         //2.业务逻辑处理
-
+        handler(msgRequest);
+    }
+    void handler(MessageRequest msgRequest){
+        switch (Objects.requireNonNull(MessageType.of(msgRequest.getType()))){
+            case CHAT_MESSAGE:
+                ChatMessage chatMessage = JSON.parseObject(msgRequest.getBody(),ChatMessage.class);
+                break;
+            default:
+                System.out.println(2);
+        }
     }
 
 

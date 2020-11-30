@@ -76,7 +76,7 @@ public class IMClientServiceImpl implements IMClientService {
         //重发两次
         while (time <= 2) {
             if (ackRedisService.exist(request.getId())) {
-                LOGGER.info("[doResendCheck]-send message again.message={}", request);
+                LOGGER.error("[doResendCheck]-send message again.message={}", request);
                 channel.writeAndFlush(Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8));
                 try {
                     TimeUnit.SECONDS.sleep(2);

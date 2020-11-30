@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.meng.mengim.common.bean.HeartMessage;
 import com.meng.mengim.common.bean.MessageRequest;
 import com.meng.mengim.common.constant.MessageType;
+import com.meng.mengim.server.service.UserChannelService;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ import javax.annotation.Resource;
 @Component
 public class HeartBeatMessageHandler extends AbstractHandler {
     @Resource
-    private LoginMessageHandler loginMessageHandler;
+    private UserChannelService userChannelService;
 
 
     @Override
@@ -29,8 +30,8 @@ public class HeartBeatMessageHandler extends AbstractHandler {
     public void handler(ChannelHandlerContext ctx, MessageRequest request) {
         HeartMessage message = JSON.parseObject(request.getBody(), HeartMessage.class);
         //如果没有代表重新连接
-        if (loginMessageHandler.getChannelByMemberId(message.getMemberId()) == null) {
-            loginMessageHandler.addUserChannel(message.getMemberId(), ctx.channel());
+        if (userChannelService.getChannelByMemberId(message.getMemberId()) == null) {
+            userChannelService.addUserChannel(message.getMemberId(), ctx.channel());
         }
     }
 }

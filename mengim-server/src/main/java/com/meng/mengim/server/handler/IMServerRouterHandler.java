@@ -7,6 +7,7 @@ import com.meng.mengim.common.constant.AttributeKeyConstant;
 import com.meng.mengim.common.constant.MessageType;
 import com.meng.mengim.common.util.JsonUtils;
 import com.meng.mengim.server.handler.factory.HandlerFactory;
+import com.meng.mengim.server.service.UserChannelService;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -33,7 +34,7 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
     @Resource
     private HandlerFactory handlerFactory;
     @Resource
-    private LoginMessageHandler loginMessageHandler;
+    private UserChannelService userChannelService;
 
     @Override
     protected void channelRead0(ChannelHandlerContext context, ByteBuf buf) throws Exception {
@@ -59,7 +60,7 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {
-                loginMessageHandler.removeUserChannel(ctx);
+                userChannelService.removeUserChannel(ctx);
             }
         }
         super.userEventTriggered(ctx, evt);
@@ -75,7 +76,7 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         LOGGER.error("[exceptionCaught],disconnect,memberId={}", ctx.channel().attr(AttributeKeyConstant.MEMBER_ID).get());
         System.out.println("出问题了");
-        loginMessageHandler.removeUserChannel(ctx);
+        userChannelService.removeUserChannel(ctx);
         cause.printStackTrace();
         ctx.close();
     }
