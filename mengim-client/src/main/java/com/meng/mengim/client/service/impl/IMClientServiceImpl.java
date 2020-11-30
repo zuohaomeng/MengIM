@@ -50,12 +50,12 @@ public class IMClientServiceImpl implements IMClientService {
     @Override
     public void sendLoginMessage(long memberId) {
         MessageRequest request = MessageUtil.buildLoginMessage(memberId);
-        ByteBuf buf = Unpooled.copiedBuffer(JSON.toJSONString(request),CharsetUtil.UTF_8);
+        ByteBuf buf = Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8);
         //发送
         channel.writeAndFlush(buf);
         //重发校验
         resendCheck(channel, request);
-        heardBeatHandler.heardBead(channel,memberId);
+        heardBeatHandler.heardBead(channel, memberId);
     }
 
 
@@ -76,8 +76,8 @@ public class IMClientServiceImpl implements IMClientService {
         //重发两次
         while (time <= 2) {
             if (ackRedisService.exist(request.getId())) {
-                LOGGER.info("[doResendCheck]-send message again.message={}",request);
-                channel.writeAndFlush(Unpooled.copiedBuffer(JSON.toJSONString(request),CharsetUtil.UTF_8));
+                LOGGER.info("[doResendCheck]-send message again.message={}", request);
+                channel.writeAndFlush(Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8));
                 try {
                     TimeUnit.SECONDS.sleep(2);
                 } catch (InterruptedException e) {

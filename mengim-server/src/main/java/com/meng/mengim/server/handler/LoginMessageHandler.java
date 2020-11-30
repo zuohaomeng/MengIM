@@ -7,7 +7,6 @@ import com.meng.mengim.common.constant.AttributeKeyConstant;
 import com.meng.mengim.common.constant.MessageType;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

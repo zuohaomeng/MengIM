@@ -26,7 +26,6 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageClientHandler.class);
 
 
-
     @Resource
     private AckRedisService ackRedisService;
 
@@ -47,14 +46,13 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         if (msgRequest.getType() == MessageType.ACK_MESSAGE.getType()) {
             AckMessage ackMessage = JSON.parseObject(msgRequest.getBody(), AckMessage.class);
             Boolean result = ackRedisService.deleteMessageId(ackMessage.getAckId());
-            if(!result){
-                LOGGER.error("[channelRead0]-ack,delete messageId error.messageId={}",ackMessage.getAckId());
+            if (!result) {
+                LOGGER.error("[channelRead0]-ack,delete messageId error.messageId={}", ackMessage.getAckId());
             }
         }
         //2.业务逻辑处理
 
     }
-
 
 
     @Override

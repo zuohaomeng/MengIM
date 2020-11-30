@@ -38,11 +38,8 @@ public class NettyServerConfig {
 
         try {
             serverBootstrap.group(group)
-                    //指定所使用NIO的传输Channel
                     .channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(port))
-                    //添加一个EchoServerHandler到子Channel的ChannelPipeline
-                    //每次channel被注册到channelpipeline是，调用这个方法
                     .childHandler(new ChannelInitializer<SocketChannel>() {
 
                         //初始化每一个channel
@@ -52,7 +49,6 @@ public class NettyServerConfig {
                                     .addLast(imServerRouterHandler);
                         }
                     });
-            //同步地绑定服务器，调用sync()方法阻塞等待直到绑定完成
             ChannelFuture f = serverBootstrap.bind().sync();
         } catch (Exception e) {
             LOGGER.error("[NettyConfig init error],", e);

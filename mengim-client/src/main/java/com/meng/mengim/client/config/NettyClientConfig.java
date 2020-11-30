@@ -34,17 +34,15 @@ public class NettyClientConfig {
     private MessageClientHandler messageClientHandler;
 
 
-
     @PostConstruct
     public void init() throws Exception {
         LOGGER.info("[NettyClientConfig],init-------");
-        //用于处理客户端连接和socketchannel的网络读写
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
                     .channel(NioSocketChannel.class)
-                    .remoteAddress(new InetSocketAddress(host,port))
+                    .remoteAddress(new InetSocketAddress(host, port))
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
@@ -54,14 +52,14 @@ public class NettyClientConfig {
             channelFuture = b.connect().sync();
             channel = channelFuture.channel();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("[NettyClientConfig init],init error");
         }
 
     }
 
     @Bean
-    public Channel channel(){
+    public Channel channel() {
         return channel;
     }
 }
