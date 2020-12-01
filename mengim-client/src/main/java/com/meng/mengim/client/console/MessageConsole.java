@@ -4,7 +4,6 @@ import com.meng.mengim.client.service.IMClientService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,7 +23,6 @@ public class MessageConsole implements ApplicationRunner {
     private IMClientService imClientService;
     @Value("${server.port}")
     private long memberId;
-
     ScheduledExecutorService threadPool = new ScheduledThreadPoolExecutor(1);
 
     @Override
