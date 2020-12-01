@@ -33,6 +33,6 @@ public class HeardBeatHandler {
         executorService.scheduleAtFixedRate(() -> {
             ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8);
             channel.writeAndFlush(byteBuf);
-        }, 50000, 10, TimeUnit.SECONDS);
+        }, 10, 10, TimeUnit.SECONDS);
     }
 }

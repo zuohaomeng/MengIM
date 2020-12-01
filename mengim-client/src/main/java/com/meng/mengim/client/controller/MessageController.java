@@ -12,7 +12,9 @@ import io.netty.channel.ChannelFuture;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -33,15 +35,16 @@ public class MessageController {
     @Resource
     private Channel channel;
 
+
     @RequestMapping("/sendChatMessage")
     public Object sendChatMessage() {
-        IMClientService.sendChatMessage(178183852, "你好");
+        IMClientService.sendChatMessage(123456, 456789, "你好");
         return "success";
     }
 
     @RequestMapping("/sendLoginMessage")
-    public Object sendLoginMessage() {
-        IMClientService.sendLoginMessage(178183852);
+    public Object sendLoginMessage(@RequestParam long messageId) {
+        IMClientService.sendLoginMessage(messageId);
         return "success";
     }
 

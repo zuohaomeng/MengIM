@@ -60,10 +60,12 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         //2.业务逻辑处理
         handler(msgRequest);
     }
-    void handler(MessageRequest msgRequest){
-        switch (Objects.requireNonNull(MessageType.of(msgRequest.getType()))){
+
+    void handler(MessageRequest msgRequest) {
+        switch (Objects.requireNonNull(MessageType.of(msgRequest.getType()))) {
             case CHAT_MESSAGE:
-                ChatMessage chatMessage = JSON.parseObject(msgRequest.getBody(),ChatMessage.class);
+                ChatMessage chatMessage = JSON.parseObject(msgRequest.getBody(), ChatMessage.class);
+                chatMessageService.received(chatMessage);
                 break;
             default:
                 System.out.println(2);

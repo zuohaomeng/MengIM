@@ -36,7 +36,6 @@ public class NettyClientConfig {
 
     @PostConstruct
     public void init() throws Exception {
-        LOGGER.info("[NettyClientConfig],init-------");
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();

@@ -4,6 +4,7 @@ import com.meng.mengim.client.service.ChatMessageService;
 import com.meng.mengim.common.bean.ChatMessage;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -17,8 +18,9 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     @Override
     public void received(ChatMessage chatMessage) {
         String message = chatMessage.getMemberId() + "-" +
-                DateTimeFormatter.ofPattern("HH:mm:ss") + "----------------------" +
+                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "----------------------" +
                 chatMessage.getContent();
         System.out.println(message);
+
     }
 }

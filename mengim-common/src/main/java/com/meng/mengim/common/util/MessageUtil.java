@@ -15,13 +15,14 @@ import java.util.UUID;
  * @Description
  */
 public class MessageUtil {
-    public static MessageRequest buildChatMessage(long memberId, String context){
+    public static MessageRequest buildChatMessage(long memberId,long receivedId, String context){
         MessageRequest request = new MessageRequest();
         request.setType(MessageType.CHAT_MESSAGE.getType());
         request.setId(UUID.randomUUID().toString());
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setContent(context);
         chatMessage.setMemberId(memberId);
+        chatMessage.setReceivedId(receivedId);
         String body = JSON.toJSONString(chatMessage);
         request.setBody(body);
         return request;

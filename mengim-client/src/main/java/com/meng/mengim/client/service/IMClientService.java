@@ -9,7 +9,7 @@ public interface IMClientService {
     /**
      * 发送聊天消息
      */
-    void sendChatMessage(long messageId,String context);
+    void sendChatMessage(long messageId,long receivedId,String context);
     /**
      * 发送上线消息
      */

@@ -10,7 +10,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.util.CharsetUtil;
-import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class IMClientServiceImpl implements IMClientService {
     private static final Logger LOGGER = LoggerFactory.getLogger(IMClientServiceImpl.class);
-    ScheduledExecutorService threadPool = new ScheduledThreadPoolExecutor(300);
+    ScheduledExecutorService threadPool = new ScheduledThreadPoolExecutor(1);
     @Resource
     private Channel channel;
     @Resource
@@ -37,10 +36,12 @@ public class IMClientServiceImpl implements IMClientService {
     private HeardBeatHandler heardBeatHandler;
 
     @Override
-    public void sendChatMessage(long memberId, String context) {
+    public void sendChatMessage(long memberId,long receivedId, String context) {
 
-        MessageRequest request = MessageUtil.buildChatMessage(memberId, context);
+        MessageRequest request = MessageUtil.buildChatMessage(memberId, receivedId, context);
         ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8);
+        //ack缓存
+        ackRedisService.saveMessageId(request.getId());
         //发送
         channel.writeAndFlush(byteBuf);
         //重发校验
@@ -51,6 +52,8 @@ public class IMClientServiceImpl implements IMClientService {
     public void sendLoginMessage(long memberId) {
         MessageRequest request = MessageUtil.buildLoginMessage(memberId);
         ByteBuf buf = Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8);
+        //ack缓存
+        ackRedisService.saveMessageId(request.getId());
         //发送
         channel.writeAndFlush(buf);
         //重发校验
@@ -63,12 +66,10 @@ public class IMClientServiceImpl implements IMClientService {
      * 重发确认
      */
     private void resendCheck(Channel channel, MessageRequest request) {
-        //ack缓存
-        ackRedisService.saveMessageId(request.getId());
         //ack校验
         threadPool.schedule(() -> {
             doResendCheck(channel, request);
-        }, 5, TimeUnit.SECONDS);
+        }, 10, TimeUnit.SECONDS);
     }
 
     private void doResendCheck(Channel channel, MessageRequest request) {

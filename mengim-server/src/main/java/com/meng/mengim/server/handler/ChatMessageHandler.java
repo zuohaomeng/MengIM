@@ -23,7 +23,7 @@ import javax.annotation.Resource;
  */
 @Component
 public class ChatMessageHandler extends AbstractHandler{
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatMessageHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChatMessageHandler.class);
 
     @Resource
     private UserChannelService userChannelService;
@@ -35,10 +35,10 @@ public class ChatMessageHandler extends AbstractHandler{
 
     @Override
     public void handler(ChannelHandlerContext ctx, MessageRequest msgRequest) {
-        LOGGER.info("普通聊天消息处理开始了----");
         ChatMessage chatMessage = JSON.parseObject(msgRequest.getBody(), ChatMessage.class);
-        Channel channel = userChannelService.getChannelByMemberId(chatMessage.getMemberId());
+        Channel channel = userChannelService.getChannelByMemberId(chatMessage.getReceivedId());
         //说明在线
+        logger.info("[ChatMessageHandler handler]-received message,message={}",chatMessage);
         if(channel != null){
             ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(msgRequest), CharsetUtil.UTF_8);
             channel.writeAndFlush(byteBuf);
