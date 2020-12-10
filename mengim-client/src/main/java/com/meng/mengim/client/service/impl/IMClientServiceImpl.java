@@ -37,15 +37,14 @@ public class IMClientServiceImpl implements IMClientService {
 
     @Override
     public void sendChatMessage(long memberId,long receivedId, String context) {
-
-        MessageRequest request = MessageUtil.buildChatMessage(memberId, receivedId, context);
-        ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8);
-        //ack缓存
-        ackRedisService.saveMessageId(request.getId());
-        //发送
-        channel.writeAndFlush(byteBuf);
-        //重发校验
-        resendCheck(channel, request);
+            MessageRequest request = MessageUtil.buildChatMessage(memberId, receivedId, context);
+            ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8);
+            //ack缓存
+            ackRedisService.saveMessageId(request.getId());
+            //发送
+            channel.writeAndFlush(byteBuf);
+            //重发校验
+            resendCheck(channel, request);
     }
 
     @Override

@@ -1,18 +1,9 @@
 package com.meng.mengim.client.controller;
 
 import com.meng.mengim.client.service.IMClientService;
-import com.meng.mengim.common.bean.ChatMessage;
-import com.meng.mengim.common.bean.LoginMessage;
-import com.meng.mengim.common.constant.MessageType;
-import com.meng.mengim.common.util.JsonUtils;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +18,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/message")
 public class MessageController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
     @Resource
     private IMClientService IMClientService;

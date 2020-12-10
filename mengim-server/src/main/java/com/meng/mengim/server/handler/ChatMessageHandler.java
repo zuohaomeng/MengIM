@@ -19,10 +19,10 @@ import javax.annotation.Resource;
 /**
  * @Author ZuoHao
  * @Date 2020/11/12
- * @Description   普通聊天消息逻辑处理
+ * @Description 普通聊天消息逻辑处理
  */
 @Component
-public class ChatMessageHandler extends AbstractHandler{
+public class ChatMessageHandler extends AbstractHandler {
     private static final Logger logger = LoggerFactory.getLogger(ChatMessageHandler.class);
 
     @Resource
@@ -38,11 +38,11 @@ public class ChatMessageHandler extends AbstractHandler{
         ChatMessage chatMessage = JSON.parseObject(msgRequest.getBody(), ChatMessage.class);
         Channel channel = userChannelService.getChannelByMemberId(chatMessage.getReceivedId());
         //说明在线
-        logger.info("[ChatMessageHandler handler]-received message,message={}",chatMessage);
-        if(channel != null){
+        logger.info("[ChatMessageHandler handler]-received message,message={}", chatMessage);
+        if (channel != null) {
             ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(msgRequest), CharsetUtil.UTF_8);
             channel.writeAndFlush(byteBuf);
-        }else {//不在线，缓存
+        } else {//不在线，缓存
             System.out.println("缓存");
         }
 

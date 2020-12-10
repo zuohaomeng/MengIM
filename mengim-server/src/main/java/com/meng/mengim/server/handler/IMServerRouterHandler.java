@@ -39,7 +39,13 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
     @Override
     protected void channelRead0(ChannelHandlerContext context, ByteBuf buf) throws Exception {
         String str = buf.toString(CharsetUtil.UTF_8);
-        MessageRequest message = JSON.parseObject(str, MessageRequest.class);
+        MessageRequest message = null;
+        try {
+            message = JSON.parseObject(str, MessageRequest.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //获取具体的处理类型
         AbstractHandler handler = handlerFactory.get(message.getType());
 
