@@ -1,6 +1,6 @@
 package com.meng.mengim.client.service.impl;
 
-import com.meng.mengim.client.service.AckRedisService;
+import com.meng.mengim.client.service.AckStoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
  * @Description
  */
 @Service
-public class AckRedisServiceImpl implements AckRedisService {
-    private final Logger logger = LoggerFactory.getLogger(AckRedisServiceImpl.class);
+public class AckStoreServiceImpl implements AckStoreService {
+    private final Logger logger = LoggerFactory.getLogger(AckStoreServiceImpl.class);
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
     private static final String BEGIN = "ACK:";

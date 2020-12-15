@@ -5,7 +5,7 @@ package com.meng.mengim.client.service;
  * @Date 2020/11/13
  * @Description  Ack应答消息处理逻辑
  */
-public interface AckRedisService {
+public interface AckStoreService {
     /**
      * 保存发送的消息
      * @param messageId

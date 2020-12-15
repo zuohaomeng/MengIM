@@ -1,9 +1,8 @@
 package com.meng.mengim.client.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.meng.mengim.client.service.AckRedisService;
+import com.meng.mengim.client.service.AckStoreService;
 import com.meng.mengim.client.service.ChatMessageService;
-import com.meng.mengim.client.service.IMClientService;
 import com.meng.mengim.common.bean.AckMessage;
 import com.meng.mengim.common.bean.ChatMessage;
 import com.meng.mengim.common.bean.MessageRequest;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Objects;
 
-import static com.meng.mengim.common.constant.MessageType.CHAT_MESSAGE;
-
 /**
  * @Author ZuoHao
  * @Date 2020/11/19
@@ -31,8 +28,8 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageClientHandler.class);
 
 
-    @Resource
-    private AckRedisService ackRedisService;
+    @Resource(name = "ackQueueServiceImpl")
+    private AckStoreService ackStoreService;
     @Resource
     private ChatMessageService chatMessageService;
 
@@ -51,7 +48,7 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         //1.ACK确认
         if (msgRequest.getType() == MessageType.ACK_MESSAGE.getType()) {
             AckMessage ackMessage = JSON.parseObject(msgRequest.getBody(), AckMessage.class);
-            Boolean result = ackRedisService.deleteMessageId(ackMessage.getAckId());
+            Boolean result = ackStoreService.deleteMessageId(ackMessage.getAckId());
             if (!result) {
                 LOGGER.error("[channelRead0]-ack,delete messageId error.messageId={}", ackMessage.getAckId());
             }

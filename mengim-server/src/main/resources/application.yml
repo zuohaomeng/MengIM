@@ -4,7 +4,17 @@ server:
 spring:
   application:
     name: mengim-server
-
+  redis:
+    host: 47.98.133.16
+    port: 10003
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 500
+        min-idle: 0
+    lettuce:
+      shutdown-timeout: 0
 
 #logging:
 #  level:

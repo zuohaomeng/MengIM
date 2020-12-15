@@ -2,6 +2,7 @@ package com.meng.mengim.server.service.impl;
 
 import com.meng.mengim.server.service.RedoRedisService;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
@@ -10,6 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @author ZuoHao
  * @date 2020/12/15
  */
+@Service
 public class RedoRedisServiceImpl implements RedoRedisService {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
