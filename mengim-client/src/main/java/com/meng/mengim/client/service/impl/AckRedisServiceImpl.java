@@ -19,22 +19,22 @@ public class AckRedisServiceImpl implements AckRedisService {
     private final Logger logger = LoggerFactory.getLogger(AckRedisServiceImpl.class);
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
-
+    private static final String BEGIN = "ACK:";
     /**
      * 保存消息发送id30s
      */
     @Override
     public void saveMessageId(String messageId) {
-        redisTemplate.opsForValue().set(messageId, 1, 30, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(BEGIN+messageId, 1, 30, TimeUnit.SECONDS);
     }
 
     @Override
     public Boolean deleteMessageId(String messageId) {
-        return redisTemplate.delete(messageId);
+        return redisTemplate.delete(BEGIN+messageId);
     }
 
     @Override
     public Boolean exist(String messageId) {
-        return redisTemplate.hasKey(messageId);
+        return redisTemplate.hasKey(BEGIN+messageId);
     }
 }

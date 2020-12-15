@@ -7,6 +7,7 @@ import com.meng.mengim.common.constant.AttributeKeyConstant;
 import com.meng.mengim.common.constant.MessageType;
 import com.meng.mengim.common.util.JsonUtils;
 import com.meng.mengim.server.handler.factory.HandlerFactory;
+import com.meng.mengim.server.service.RedoRedisService;
 import com.meng.mengim.server.service.UserChannelService;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
@@ -35,6 +36,8 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
     private HandlerFactory handlerFactory;
     @Resource
     private UserChannelService userChannelService;
+    @Resource
+    private RedoRedisService redoRedisService;
 
     @Override
     protected void channelRead0(ChannelHandlerContext context, ByteBuf buf) throws Exception {
@@ -51,7 +54,12 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
 
         //进行处理
         try {
-            handler.handler(context, message);
+            if(redoRedisService.redo(message.getId())){
+                LOGGER.info("[消息重复消费]-message={}",message);
+            }else {
+                handler.handler(context, message);
+            }
+
         } catch (Exception e) {
             LOGGER.error("[具体消息处理失败],error=", e);
         }
