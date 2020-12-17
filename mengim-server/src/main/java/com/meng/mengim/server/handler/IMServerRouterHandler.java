@@ -48,18 +48,14 @@ public class IMServerRouterHandler extends SimpleChannelInboundHandler<ByteBuf> 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //获取具体的处理类型
         AbstractHandler handler = handlerFactory.get(message.getType());
 
-        //进行处理
         try {
-            if(redoRedisService.redo(message.getId())){
-                LOGGER.info("[消息重复消费]-message={}",message);
-            }else {
+            if (redoRedisService.redo(message.getId())) {
+                LOGGER.info("[消息重复消费]-message={}", message);
+            } else {
                 handler.handler(context, message);
             }
-
         } catch (Exception e) {
             LOGGER.error("[具体消息处理失败],error=", e);
         }

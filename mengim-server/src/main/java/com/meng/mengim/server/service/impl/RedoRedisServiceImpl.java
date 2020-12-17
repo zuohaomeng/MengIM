@@ -16,7 +16,7 @@ public class RedoRedisServiceImpl implements RedoRedisService {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    private static final String BEGIN = "redo";
+    private static final String BEGIN = "redo:";
 
     private static final long time = 60;
 

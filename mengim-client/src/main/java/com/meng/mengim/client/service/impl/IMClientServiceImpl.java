@@ -30,7 +30,7 @@ public class IMClientServiceImpl implements IMClientService {
     ScheduledExecutorService threadPool = new ScheduledThreadPoolExecutor(1);
     @Resource
     private Channel channel;
-    @Resource(name = "ackQueueServiceImpl")
+    @Resource(name = "ackStoreServiceImpl")
     private AckStoreService ackStoreService;
     @Resource
     private HeardBeatHandler heardBeatHandler;

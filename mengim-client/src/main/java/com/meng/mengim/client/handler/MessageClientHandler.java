@@ -28,7 +28,7 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageClientHandler.class);
 
 
-    @Resource(name = "ackQueueServiceImpl")
+    @Resource(name = "ackStoreServiceImpl")
     private AckStoreService ackStoreService;
     @Resource
     private ChatMessageService chatMessageService;

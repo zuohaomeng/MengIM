@@ -30,13 +30,10 @@ public class HandlerFactory implements ApplicationContextAware, InitializingBean
         return handlerMap.get(type);
     }
 
-
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
-
 
     @Override
     public void afterPropertiesSet() throws Exception {
