@@ -29,8 +29,8 @@ public class HeardBeatHandler {
      * 每10秒一次心跳轮训时间实现
      */
     public void heardBead(Channel channel, long memberId) {
-        MessageRequest request = MessageUtil.buildHeardMessage(memberId);
         executorService.scheduleAtFixedRate(() -> {
+            MessageRequest request = MessageUtil.buildHeardMessage(memberId);
             ByteBuf byteBuf = Unpooled.copiedBuffer(JSON.toJSONString(request), CharsetUtil.UTF_8);
             channel.writeAndFlush(byteBuf);
         }, 10, 10, TimeUnit.SECONDS);

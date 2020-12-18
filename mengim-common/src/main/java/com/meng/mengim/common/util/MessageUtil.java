@@ -40,6 +40,7 @@ public class MessageUtil {
     public static MessageRequest buildHeardMessage(long memberId){
         MessageRequest request = new MessageRequest();
         request.setType(MessageType.HEART_MESSAGE.getType());
+        request.setId(UUID.randomUUID().toString());
         HeartMessage heartMessage = new HeartMessage();
         heartMessage.setMemberId(memberId);
         String body = JSON.toJSONString(heartMessage);
